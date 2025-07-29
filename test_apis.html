@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RonBot API Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        .pending { background-color: #fff3cd; border-color: #ffeaa7; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 3px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>🔧 RonBot API Test Dashboard</h1>
+    
+    <div class="test-section pending" id="openai-test">
+        <h3>🤖 OpenAI API Test</h3>
+        <p><strong>Note:</strong> Add your API keys to test</p>
+        <button onclick="testOpenAI()">Test OpenAI</button>
+        <div id="openai-result"></div>
+    </div>
+    
+    <div class="test-section pending" id="elevenlabs-test">
+        <h3>🔊 ElevenLabs API Test</h3>
+        <p><strong>Note:</strong> Add your API keys to test</p>
+        <button onclick="testElevenLabs()">Test ElevenLabs</button>
+        <div id="elevenlabs-result"></div>
+    </div>
+    
+    <div class="test-section pending" id="news-test">
+        <h3>📰 News API Test</h3>
+        <p><strong>Note:</strong> Add your API keys to test</p>
+        <button onclick="testNewsAPI()">Test News API</button>
+        <div id="news-result"></div>
+    </div>
+    
+    <div class="test-section pending" id="google-test">
+        <h3>🔍 Google Search API Test</h3>
+        <p><strong>Note:</strong> You still need to add your Google Search Engine ID to complete this setup.</p>
+        <button onclick="testGoogleSearch()">Test Google Search</button>
+        <div id="google-result"></div>
+    </div>
+
+    <script>
+        const API_KEYS = {
+            openai: 'YOUR_OPENAI_API_KEY_HERE',
+            elevenlabs: 'YOUR_ELEVENLABS_API_KEY_HERE',
+            news: 'YOUR_NEWS_API_KEY_HERE',
+            google: 'YOUR_GOOGLE_SEARCH_API_KEY_HERE'
+        };
+
+        function updateResult(elementId, success, message) {
+            const element = document.getElementById(elementId);
+            const resultDiv = element.querySelector('div[id$="-result"]');
+            
+            element.className = `test-section ${success ? 'success' : 'error'}`;
+            resultDiv.innerHTML = `<pre>${message}</pre>`;
+        }
+
+        async function testOpenAI() {
+            if (API_KEYS.openai === 'YOUR_OPENAI_API_KEY_HERE') {
+                updateResult('openai-test', false, '❌ Please add your OpenAI API key to test');
+                return;
+            }
+            
+            try {
+                const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${API_KEYS.openai}`
+                    },
+                    body: JSON.stringify({
+                        model: 'gpt-3.5-turbo',
+                        messages: [{role: 'user', content: 'Hello'}],
+                        max_tokens: 50
+                    })
+                });
+                
+                const data = await response.json();
+                if (response.ok) {
+                    updateResult('openai-test', true, `✅ OpenAI API Working!\n\nResponse: ${data.choices[0].message.content}`);
+                } else {
+                    updateResult('openai-test', false, `❌ OpenAI API Error: ${response.status}\n\n${JSON.stringify(data, null, 2)}`);
+                }
+            } catch (error) {
+                updateResult('openai-test', false, `❌ OpenAI API Error: ${error.message}`);
+            }
+        }
+
+        async function testElevenLabs() {
+            if (API_KEYS.elevenlabs === 'YOUR_ELEVENLABS_API_KEY_HERE') {
+                updateResult('elevenlabs-test', false, '❌ Please add your ElevenLabs API key to test');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`https://api.elevenlabs.io/v1/voices`, {
+                    headers: {
+                        'xi-api-key': API_KEYS.elevenlabs
+                    }
+                });
+                
+                const data = await response.json();
+                if (response.ok) {
+                    updateResult('elevenlabs-test', true, `✅ ElevenLabs API Working!\n\nAvailable voices: ${data.voices.length}\nFirst voice: ${data.voices[0]?.name || 'Unknown'}`);
+                } else {
+                    updateResult('elevenlabs-test', false, `❌ ElevenLabs API Error: ${response.status}\n\n${JSON.stringify(data, null, 2)}`);
+                }
+            } catch (error) {
+                updateResult('elevenlabs-test', false, `❌ ElevenLabs API Error: ${error.message}`);
+            }
+        }
+
+        async function testNewsAPI() {
+            if (API_KEYS.news === 'YOUR_NEWS_API_KEY_HERE') {
+                updateResult('news-test', false, '❌ Please add your News API key to test');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`https://newsapi.org/v2/top-headlines?country=us&apiKey=${API_KEYS.news}&pageSize=1`);
+                
+                const data = await response.json();
+                if (response.ok) {
+                    updateResult('news-test', true, `✅ News API Working!\n\nTotal results: ${data.totalResults}\nFirst article: ${data.articles[0]?.title || 'No title'}`);
+                } else {
+                    updateResult('news-test', false, `❌ News API Error: ${response.status}\n\n${JSON.stringify(data, null, 2)}`);
+                }
+            } catch (error) {
+                updateResult('news-test', false, `❌ News API Error: ${error.message}`);
+            }
+        }
+
+        async function testGoogleSearch() {
+            if (API_KEYS.google === 'YOUR_GOOGLE_SEARCH_API_KEY_HERE') {
+                updateResult('google-test', false, '❌ Please add your Google Search API key to test');
+                return;
+            }
+            
+            try {
+                // This will fail without Search Engine ID, but we can test the API key
+                const response = await fetch(`https://www.googleapis.com/customsearch/v1?key=${API_KEYS.google}&cx=test&q=test`);
+                
+                const data = await response.json();
+                if (response.status === 400 && data.error?.message?.includes('cx')) {
+                    updateResult('google-test', true, `✅ Google Search API Key Valid!\n\nNote: You need to add your Search Engine ID (cx parameter) to complete the setup.\n\nError: ${data.error.message}`);
+                } else {
+                    updateResult('google-test', false, `❌ Google Search API Error: ${response.status}\n\n${JSON.stringify(data, null, 2)}`);
+                }
+            } catch (error) {
+                updateResult('google-test', false, `❌ Google Search API Error: ${error.message}`);
+            }
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Debug Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test { margin: 20px 0; padding: 15px; border: 1px solid #ddd; }
+        .success { background: #d4edda; }
+        .error { background: #f8d7da; }
+        button { padding: 10px 20px; margin: 5px; }
+        pre { background: #f8f9fa; padding: 10px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>🔧 API Debug Test</h1>
+    
+    <div class="test">
+        <h3>📰 News API Test</h3>
+        <button onclick="testNews()">Test News API</button>
+        <div id="news-result"></div>
+    </div>
+    
+    <div class="test">
+        <h3>🔊 ElevenLabs Test</h3>
+        <button onclick="testElevenLabs()">Test ElevenLabs</button>
+        <div id="elevenlabs-result"></div>
+    </div>
+    
+    <div class="test">
+        <h3>🔍 Google Search Test</h3>
+        <button onclick="testGoogle()">Test Google Search</button>
+        <div id="google-result"></div>
+    </div>
+
+    <script>
+        const API_KEYS = {
+            news: 'b8bf7143a2f04a749d3fa4b592923e16',
+            elevenlabs: 'sk_8f6d7141ce35d827050d40a02d318432a0e8f048e03feec5',
+            google: 'AIzaSyBO4b1sNZPouJUPDafvkvchZPZAo0PHJNI'
+        };
+
+        function updateResult(elementId, success, message) {
+            const element = document.getElementById(elementId);
+            element.className = `test ${success ? 'success' : 'error'}`;
+            element.querySelector('div').innerHTML = `<pre>${message}</pre>`;
+        }
+
+        async function testNews() {
+            try {
+                console.log('Testing News API...');
+                const response = await fetch(`https://newsapi.org/v2/top-headlines?country=us&apiKey=${API_KEYS.news}&pageSize=1`);
+                
+                console.log('News API Response:', response);
+                const data = await response.json();
+                console.log('News API Data:', data);
+                
+                if (response.ok) {
+                    updateResult('news-result', true, `✅ News API Working!\n\nStatus: ${response.status}\nTotal Results: ${data.totalResults}\nFirst Article: ${data.articles[0]?.title || 'No title'}`);
+                } else {
+                    updateResult('news-result', false, `❌ News API Error: ${response.status}\n\n${JSON.stringify(data, null, 2)}`);
+                }
+            } catch (error) {
+                console.error('News API Error:', error);
+                updateResult('news-result', false, `❌ News API Error: ${error.message}`);
+            }
+        }
+
+        async function testElevenLabs() {
+            try {
+                console.log('Testing ElevenLabs...');
+                const response = await fetch('https://api.elevenlabs.io/v1/voices', {
+                    headers: {
+                        'xi-api-key': API_KEYS.elevenlabs
+                    }
+                });
+                
+                console.log('ElevenLabs Response:', response);
+                const data = await response.json();
+                console.log('ElevenLabs Data:', data);
+                
+                if (response.ok) {
+                    updateResult('elevenlabs-result', true, `✅ ElevenLabs Working!\n\nStatus: ${response.status}\nAvailable Voices: ${data.voices?.length || 0}\nFirst Voice: ${data.voices?.[0]?.name || 'Unknown'}`);
+                } else {
+                    updateResult('elevenlabs-result', false, `❌ ElevenLabs Error: ${response.status}\n\n${JSON.stringify(data, null, 2)}`);
+                }
+            } catch (error) {
+                console.error('ElevenLabs Error:', error);
+                updateResult('elevenlabs-result', false, `❌ ElevenLabs Error: ${error.message}`);
+            }
+        }
+
+        async function testGoogle() {
+            try {
+                console.log('Testing Google Search...');
+                const response = await fetch(`https://www.googleapis.com/customsearch/v1?key=${API_KEYS.google}&cx=test&q=test`);
+                
+                console.log('Google Response:', response);
+                const data = await response.json();
+                console.log('Google Data:', data);
+                
+                if (response.status === 400 && data.error?.message?.includes('cx')) {
+                    updateResult('google-result', true, `✅ Google API Key Valid!\n\nStatus: ${response.status}\nNote: Need Search Engine ID to complete setup\n\nError: ${data.error.message}`);
+                } else {
+                    updateResult('google-result', false, `❌ Google Search Error: ${response.status}\n\n${JSON.stringify(data, null, 2)}`);
+                }
+            } catch (error) {
+                console.error('Google Error:', error);
+                updateResult('google-result', false, `❌ Google Search Error: ${error.message}`);
+            }
+        }
+    </script>
+</body>
+</html> 

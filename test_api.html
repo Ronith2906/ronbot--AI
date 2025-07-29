@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Key Test</title>
+</head>
+<body>
+    <h1>OpenAI API Key Test</h1>
+    <p>Add your API key to test</p>
+    <button onclick="testAPI()">Test API Key</button>
+    <div id="result"></div>
+
+    <script>
+        async function testAPI() {
+            const apiKey = 'YOUR_API_KEY_HERE'; // Replace with your actual API key
+            
+            try {
+                const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${apiKey}`
+                    },
+                    body: JSON.stringify({
+                        model: 'gpt-3.5-turbo',
+                        messages: [
+                            {role: 'user', content: 'Hello'}
+                        ],
+                        max_tokens: 50
+                    })
+                });
+                
+                const data = await response.json();
+                document.getElementById('result').innerHTML = 
+                    `<h3>Status: ${response.status}</h3>
+                     <pre>${JSON.stringify(data, null, 2)}</pre>`;
+            } catch (error) {
+                document.getElementById('result').innerHTML = 
+                    `<h3>Error:</h3><pre>${error.message}</pre>`;
+            }
+        }
+    </script>
+</body>
+</html> 
