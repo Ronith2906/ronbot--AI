@@ -1,128 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RonBot - Advanced AI Assistant</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-        }
-        .container {
-            text-align: center;
-            max-width: 800px;
-            padding: 40px 20px;
-        }
-        .logo {
-            font-size: 4em;
-            margin-bottom: 20px;
-        }
-        h1 {
-            font-size: 2.5em;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-        .subtitle {
-            font-size: 1.3em;
-            margin-bottom: 30px;
-            opacity: 0.9;
-        }
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin: 40px 0;
-        }
-        .feature {
-            background: rgba(255,255,255,0.1);
-            padding: 20px;
-            border-radius: 10px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-        .feature-icon {
-            font-size: 2em;
-            margin-bottom: 10px;
-        }
-        .feature-title {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        .feature-desc {
-            font-size: 0.9em;
-            opacity: 0.8;
-        }
-        .cta-button {
-            display: inline-block;
-            background: rgba(255,255,255,0.2);
-            color: white;
-            padding: 15px 30px;
-            text-decoration: none;
-            border-radius: 25px;
-            font-weight: bold;
-            margin: 20px 10px;
-            transition: all 0.3s ease;
-            border: 2px solid rgba(255,255,255,0.3);
-        }
-        .cta-button:hover {
-            background: rgba(255,255,255,0.3);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-        .github-link {
-            margin-top: 30px;
-            opacity: 0.7;
-        }
-        .github-link a {
-            color: white;
-            text-decoration: none;
-        }
-    </style>
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
+
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
+
+    For more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+
+    This is a placeholder for base href that will be replaced by the value of
+    the `--base-href` argument provided to `flutter build`.
+  -->
+  <base href="$FLUTTER_BASE_HREF">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="RonBot - Advanced AI Assistant">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="RonBot">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>RonBot - Advanced AI Assistant</title>
+  <link rel="manifest" href="manifest.json">
+
+  <script>
+    // The value below is injected by flutter build, do not touch.
+    const serviceWorkerVersion = null;
+  </script>
+  <!-- This script adds the flutter initialization JS code -->
+  <script src="flutter.js" defer></script>
 </head>
 <body>
-    <div class="container">
-        <div class="logo">🤖</div>
-        <h1>RonBot</h1>
-        <p class="subtitle">Advanced AI Assistant with Voice Synthesis & Real-time News</p>
-        
-        <div class="features">
-            <div class="feature">
-                <div class="feature-icon">💬</div>
-                <div class="feature-title">AI Chat</div>
-                <div class="feature-desc">Intelligent conversations with ChatGPT</div>
-            </div>
-            <div class="feature">
-                <div class="feature-icon">🎨</div>
-                <div class="feature-title">Image Generation</div>
-                <div class="feature-desc">Create images with DALL-E AI</div>
-            </div>
-            <div class="feature">
-                <div class="feature-icon">🔊</div>
-                <div class="feature-title">Voice Synthesis</div>
-                <div class="feature-desc">High-quality AI voices with ElevenLabs</div>
-            </div>
-            <div class="feature">
-                <div class="feature-icon">📰</div>
-                <div class="feature-title">Real-time News</div>
-                <div class="feature-desc">Latest headlines and breaking news</div>
-            </div>
-        </div>
-        
-        <a href="https://github.com/Ronith2906/ronbot--AI" class="cta-button">
-            📁 View on GitHub
-        </a>
-        
-        <div class="github-link">
-            <p>Built with ❤️ using Flutter & AI APIs</p>
-        </div>
-    </div>
+  <script>
+    window.addEventListener('load', function(ev) {
+      // Download main.dart.js
+      _flutter.loader.loadEntrypoint({
+        serviceWorker: {
+          serviceWorkerVersion: serviceWorkerVersion,
+        },
+        onEntrypointLoaded: function(engineInitializer) {
+          engineInitializer.initializeEngine().then(function(appRunner) {
+            appRunner.runApp();
+          });
+        }
+      });
+    });
+  </script>
 </body>
 </html>
