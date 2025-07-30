@@ -46,7 +46,7 @@ class _RonBotHomeState extends State<RonBotHome> {
   
   List<Message> _messages = [];
   bool _isLoading = false;
-  
+
   @override
   void initState() {
     super.initState();
@@ -66,12 +66,12 @@ class _RonBotHomeState extends State<RonBotHome> {
 
     final userMessage = _textController.text;
     _textController.clear();
-
-    setState(() {
+      
+      setState(() {
       _messages.add(Message(
         text: userMessage,
-        isUser: true,
-        timestamp: DateTime.now(),
+      isUser: true,
+      timestamp: DateTime.now(),
       ));
       _isLoading = true;
     });
@@ -85,20 +85,20 @@ class _RonBotHomeState extends State<RonBotHome> {
         isUser: false,
         timestamp: DateTime.now(),
       ));
-      _isLoading = false;
-    });
-
+        _isLoading = false;
+      });
+      
     _scrollToBottom();
   }
 
   void _scrollToBottom() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_scrollController.hasClients) {
-        _scrollController.animateTo(
-          _scrollController.position.maxScrollExtent,
-          duration: Duration(milliseconds: 300),
-          curve: Curves.easeOut,
-        );
+          _scrollController.animateTo(
+            _scrollController.position.maxScrollExtent,
+            duration: Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+          );
       }
     });
   }
@@ -115,18 +115,18 @@ class _RonBotHomeState extends State<RonBotHome> {
           IconButton(
             icon: Icon(Icons.info),
             onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
                   title: Text('About RonBot'),
                   content: Text('This is a demo version of RonBot, an advanced AI assistant built with Flutter. The full version includes integration with OpenAI, ElevenLabs, News API, and Google Search APIs.'),
-                  actions: [
-                    TextButton(
+        actions: [
+          TextButton(
                       onPressed: () => Navigator.of(context).pop(),
-                      child: Text('OK'),
-                    ),
-                  ],
-                ),
+            child: Text('OK'),
+          ),
+        ],
+      ),
               );
             },
           ),
@@ -135,11 +135,11 @@ class _RonBotHomeState extends State<RonBotHome> {
       body: Column(
         children: [
           Expanded(
-            child: ListView.builder(
-              controller: _scrollController,
-              padding: EdgeInsets.all(16),
+                child: ListView.builder(
+                  controller: _scrollController,
+                  padding: EdgeInsets.all(16),
               itemCount: _messages.length,
-              itemBuilder: (context, index) {
+                  itemBuilder: (context, index) {
                 final message = _messages[index];
                 return _buildMessageBubble(message);
               },
@@ -147,52 +147,52 @@ class _RonBotHomeState extends State<RonBotHome> {
           ),
           if (_isLoading)
             Padding(
-              padding: EdgeInsets.all(16),
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  ),
+                        padding: EdgeInsets.all(16),
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            ),
                   SizedBox(width: 16),
                   Text('RonBot is thinking...'),
                 ],
               ),
             ),
           _buildInputArea(),
-        ],
-      ),
-    );
-  }
-
+                          ],
+                        ),
+                      );
+                    }
+                    
   Widget _buildMessageBubble(Message message) {
-    return Container(
+                    return Container(
       margin: EdgeInsets.only(bottom: 16),
-      child: Row(
+                      child: Row(
         mainAxisAlignment: message.isUser 
             ? MainAxisAlignment.end 
             : MainAxisAlignment.start,
-        children: [
+                        children: [
           if (!message.isUser) ...[
-            CircleAvatar(
+                          CircleAvatar(
               backgroundColor: Colors.indigo,
               child: Text('🤖', style: TextStyle(fontSize: 16)),
             ),
             SizedBox(width: 8),
           ],
           Flexible(
-            child: Container(
-              padding: EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: message.isUser 
+                            child: Container(
+                              padding: EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: message.isUser 
                     ? Colors.indigo 
                     : Colors.grey[200],
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Text(
-                message.text,
-                style: TextStyle(
+                                    message.text,
+                                    style: TextStyle(
                   color: message.isUser 
                       ? Colors.white 
                       : Colors.black87,
@@ -207,43 +207,43 @@ class _RonBotHomeState extends State<RonBotHome> {
               child: Icon(Icons.person, color: Colors.grey[600]),
             ),
           ],
-        ],
-      ),
-    );
+                        ],
+                      ),
+                    );
   }
 
   Widget _buildInputArea() {
     return Container(
-      padding: EdgeInsets.all(16),
-      decoration: BoxDecoration(
+            padding: EdgeInsets.all(16),
+            decoration: BoxDecoration(
         color: Colors.white,
-        boxShadow: [
-          BoxShadow(
+              boxShadow: [
+                BoxShadow(
             color: Colors.black12,
             blurRadius: 4,
             offset: Offset(0, -2),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              controller: _textController,
-              decoration: InputDecoration(
-                hintText: 'Type your message...',
-                border: OutlineInputBorder(
+                ),
+              ],
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _textController,
+                    decoration: InputDecoration(
+                      hintText: 'Type your message...',
+                      border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(24),
-                ),
-                contentPadding: EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
-              ),
+                      ),
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 12,
+                      ),
+                    ),
               onSubmitted: (_) => _handleSubmit(),
             ),
           ),
-          SizedBox(width: 8),
+                SizedBox(width: 8),
           FloatingActionButton(
             onPressed: _handleSubmit,
             child: Icon(Icons.send),
